@@ -8,7 +8,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Backend odatiy holatda `http://localhost:8080` manzilida ishlaydi. Boshqa manzil uchun `.env.local` ichida `VITE_API_BASE_URL` qiymatini o'zgartiring.
+Backend odatiy holatda `http://localhost:8080` manzilida ishlaydi. Local developmentda Vite proxy ishlaydi. Faqat API boshqa domen/hostda bo‘lsa `.env.local` ichida `VITE_API_BASE_URL` qiymatini o‘zgartiring.
 
 Developmentda `/api` so‘rovlari Vite proxy orqali backendga uzatiladi, shuning uchun brauzer CORS xatosi bermaydi. Backend boshqa hostda bo‘lsa `.env.local` ichida `VITE_API_PROXY_TARGET` ni o‘zgartiring.
 

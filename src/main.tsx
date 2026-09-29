@@ -8,9 +8,10 @@ type Status = 'CREATED' | 'ACCEPTED' | 'DECLINED'
 type Experience = { occasion?: string; question?: string; intro?: string; dates?: string[]; activities?: DateType[]; place?: string; theme?: 'rose' | 'sunset' | 'night' }
 type Invite = { id: string; senderName: string; receiverName: string; dateType: DateType; proposedDate?: string; customMessage?: string; status: Status; experience?: Experience; qrCodeDataUrl?: string; ownerUrl?: string; expiresAt?: string }
 type InviteStatus = { id: string; status: Status; responseDetails?: Record<string, string>; viewCount: number; updatedAt: string }
-// In development, use Vite's same-origin /api proxy to avoid browser CORS
-// errors. Set VITE_API_BASE_URL for a separately hosted production backend.
-const API = (import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '' : 'http://localhost:8080')).replace(/\/$/, '')
+// Use the same-origin /api path by default. This works behind the production
+// nginx proxy and avoids CORS entirely; set VITE_API_BASE_URL only when the API
+// is intentionally hosted on another domain.
+const API = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const ACT: Record<DateType, [string, string]> = { coffee: ['☕', 'Qahva ichish'], dinner: ['🍝', 'Kechki ovqat'], walk: ['🌿', 'Sayr qilish'], movie: ['🎬', 'Kinoga borish'] }
 const OCC = ['Birinchi uchrashuv', 'Yillik sana', 'Seni sog‘indim', 'Yarashib olish', 'Shunchaki, chunki sen']
 async function api<T>(url: string, init?: RequestInit): Promise<T> { const r = await fetch(API + url, { ...init, headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) } }); if (!r.ok) { const b = await r.json().catch(() => null); throw new Error(b?.message || 'So‘rov bajarilmadi.') } return r.json() }
